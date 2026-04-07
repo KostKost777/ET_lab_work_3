@@ -10,9 +10,17 @@ GPIO.setup(button, GPIO.IN)
 GPIO.setup(led, GPIO.OUT)
 
 state = 0
+flag = False
 
 while True:
-    if GPIO.input(button):
+    cur_state = GPIO.input(button)
+    
+    if cur_state and not flag:
         state = not state
         GPIO.output(led, state)
-        time.sleep(0.2)
+        flag = True
+    
+    elif not cur_state and flag:
+        flag = False
+    
+    time.sleep(0.02)
