@@ -4,7 +4,18 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 leds = [16, 12, 25, 17, 27, 23, 22, 24]
-up = 9
+
+up = 9  
+down = 10
+
+GPIO.setup(leds, GPIO.OUT)
+
+GPIO.setup(up, GPIO.IN)
+GPIO.setup(down, GPIO.IN)
+
+
+GPIO.output(leds, 0)
+
 num = 0
 
 def dec2bin(value):
@@ -12,9 +23,19 @@ def dec2bin(value):
 
 sleep_time = 0.2
 
-if GPIO.input(up):
-    num = num + 1
-    print(num, dec2bin(num))
-    time.sleep(sleep_time)
-
-GPIO.output(leds, dec2bin(num))
+while True:
+    if GPIO.input(up):
+        num = num + 1
+        if num > 255:
+            num = 0
+        print(num, dec2bin(num))
+        GPIO.output(leds, dec2bin(num))
+        time.sleep(sleep_time)
+    
+    elif GPIO.input(down):
+        num = num - 1
+        if num < 0:
+            num = 255
+        print(num, dec2bin(num))
+        GPIO.output(leds, dec2bin(num))
+        time.sleep(sleep_time)
