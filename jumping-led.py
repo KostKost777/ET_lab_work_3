@@ -17,3 +17,6 @@ for led in leds:
     GPIO.output(led, 0)
 
 for led in reversed(leds):
+    GPIO.output(led, 1)
+    time.sleep(light_time)
+    GPIO.output(led, 0)
